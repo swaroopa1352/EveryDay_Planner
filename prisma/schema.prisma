@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String       @id @default(cuid())
+  name            String
+  gender          String
+  pinHash         String       // Hashed PIN for security
+  dayStartTime    String
+  timeFormat      String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  dailyPlans      DailyPlan[]
+  
+  @@index([name])
+}
+
+model DailyPlan {
+  id          String   @id @default(cuid())
+  userId      String
+  date        String   // Format: "YYYY-MM-DD"
+  todos       Json     // Array of todo items
+  mustDos     Json     // Array of must-do items
+  reminders   Json     // Array of reminders
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, date])
+  @@index([userId, date])
+}
