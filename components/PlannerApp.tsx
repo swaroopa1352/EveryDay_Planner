@@ -29,6 +29,7 @@ export default function PlannerApp() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [loginStep, setLoginStep] = useState<'name' | 'pin'>('name');
+  const [showForgotPinDialog, setShowForgotPinDialog] = useState(false);
 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 10 }, (_, i) => currentYear - 2 + i);
@@ -830,7 +831,11 @@ export default function PlannerApp() {
                     )}
 
                     <div className="flex justify-center gap-4 text-sm">
-                      <button className="text-indigo-600 hover:text-indigo-700">
+                      <button 
+                        type="button"
+                        onClick={() => setShowForgotPinDialog(true)}
+                        className="text-indigo-600 hover:text-indigo-700"
+                      >
                         Forgot PIN?
                       </button>
                     </div>
@@ -962,6 +967,57 @@ export default function PlannerApp() {
           <div className="bg-green-600 text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3">
             <CheckCircle size={24} />
             <span className="font-semibold">{toastMessage}</span>
+          </div>
+        </div>
+      )}
+
+      {/* Forgot PIN Dialog */}
+      {showForgotPinDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Reset Your Account</h2>
+            <p className="text-gray-600 mb-6">
+              Since there's no email recovery, you'll need to delete your account and create a new one with the same name but a new PIN.
+            </p>
+            <p className="text-red-600 font-semibold mb-6">
+              ⚠️ Warning: This will delete all your plans and data!
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={async () => {
+                  try {
+                    const res = await fetch('/api/auth/delete', {
+                      method: 'DELETE',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ name: userData.name })
+                    });
+                    
+                    if (res.ok) {
+                      setShowForgotPinDialog(false);
+                      setLoginStep('name');
+                      setPinInput('');
+                      setUserData({ ...userData, name: '', pin: '', confirmPin: '' });
+                      setScreen('registration');
+                      setError('');
+                      alert('Account deleted. You can now register again with a new PIN.');
+                    } else {
+                      alert('Failed to delete account');
+                    }
+                  } catch (error) {
+                    alert('Error deleting account');
+                  }
+                }}
+                className="flex-1 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition"
+              >
+                Delete Account
+              </button>
+              <button
+                onClick={() => setShowForgotPinDialog(false)}
+                className="flex-1 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
