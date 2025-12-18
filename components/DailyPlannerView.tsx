@@ -297,10 +297,12 @@ export default function DailyPlannerView({ date, onBack, onLogout }: DailyPlanne
       // Add task to target date
       if (taskType === 'todo') {
         const existingTodos: TodoItem[] = targetPlan.todos || [];
-        targetPlan.todos = [...existingTodos, { ...taskToMove, completed: false }];
+        const newTask: TodoItem = { id: taskToMove.id, text: taskToMove.text, completed: false };
+        targetPlan.todos = [...existingTodos, newTask];
       } else if (taskType === 'mustDo') {
         const existingMustDos: TodoItem[] = targetPlan.mustDos || [];
-        targetPlan.mustDos = [...existingMustDos, { ...taskToMove, completed: false }];
+        const newTask: TodoItem = { id: taskToMove.id, text: taskToMove.text, completed: false };
+        targetPlan.mustDos = [...existingMustDos, newTask];
       }
       
       // Save to target date
