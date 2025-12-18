@@ -285,7 +285,7 @@ export default function DailyPlannerView({ date, onBack, onLogout }: DailyPlanne
       
       // Load the target date's plan
       const res = await fetch(`/api/plans?date=${moveToDate}`);
-      let targetPlan = { todos: [], mustDos: [], reminders: [] };
+      let targetPlan: { todos: TodoItem[], mustDos: TodoItem[], reminders: ReminderItem[] } = { todos: [], mustDos: [], reminders: [] };
       
       if (res.ok) {
         const data = await res.json();
