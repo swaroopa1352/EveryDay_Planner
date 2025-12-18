@@ -7,6 +7,12 @@
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
   }
+
+  /* Hide body/html scrollbar - app handles its own scrolling */
+  html, body {
+    overflow: hidden;
+    height: 100%;
+  }
 }
 
 @layer utilities {

@@ -337,7 +337,8 @@ export default function DailyPlannerView({ date, onBack, onLogout }: DailyPlanne
   };
 
   return (
-    <div className="h-screen overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div className="h-screen overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="h-full overflow-y-auto p-3 md:p-6">
       {/* Loading State */}
       {isLoading && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
@@ -486,8 +487,8 @@ export default function DailyPlannerView({ date, onBack, onLogout }: DailyPlanne
       )}
 
       {/* Header */}
-      <div className="max-w-7xl mx-auto mb-6">
-        <div className="flex items-center gap-4 mb-4">
+      <div className="max-w-7xl mx-auto mb-4 md:mb-6">
+        <div className="flex items-center gap-2 md:gap-4 mb-4">
           <button 
             onClick={handleBackClick} 
             className="text-indigo-600 hover:text-indigo-800 transition p-2 hover:bg-white rounded-lg"
@@ -495,8 +496,8 @@ export default function DailyPlannerView({ date, onBack, onLogout }: DailyPlanne
             <ChevronLeft size={28} />
           </button>
           <div className="flex-1 text-center">
-            <h1 className="text-3xl font-bold text-gray-800">Plan Your Day</h1>
-            <p className="text-xl text-indigo-600 font-semibold mt-1">{date}</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Plan Your Day</h1>
+            <p className="text-lg md:text-xl text-indigo-600 font-semibold mt-1">{date}</p>
             {isViewState && (
               <p className="text-sm text-gray-500 mt-1">Previously saved plan</p>
             )}
@@ -522,11 +523,11 @@ export default function DailyPlannerView({ date, onBack, onLogout }: DailyPlanne
       </div>
 
       {/* Three Column Dashboard */}
-      <div className="max-w-7xl mx-auto grid grid-cols-3 gap-6 mb-8">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         
         {/* To-Do Column */}
         <div 
-          className="bg-blue-50 rounded-2xl shadow-lg p-6 flex flex-col h-[400px]"
+          className="bg-blue-50 rounded-2xl shadow-lg p-6 flex flex-col md:h-[400px]"
           onDragOver={handleDragOver}
           onDrop={() => handleDrop('todo')}
         >
@@ -535,7 +536,7 @@ export default function DailyPlannerView({ date, onBack, onLogout }: DailyPlanne
             <h2 className="text-2xl font-bold text-gray-800">To-Do</h2>
           </div>
 
-          <div className="space-y-3 overflow-y-auto flex-1 pr-2 custom-scrollbar">
+          <div className="space-y-3 md:overflow-y-auto md:flex-1 pr-2 custom-scrollbar">
             {todos.map((todo) => (
               <div
                 key={todo.id}
@@ -596,7 +597,7 @@ export default function DailyPlannerView({ date, onBack, onLogout }: DailyPlanne
 
         {/* Must Do Column */}
         <div 
-          className="bg-orange-50 rounded-2xl shadow-lg p-6 border-l-4 border-orange-500 flex flex-col h-[400px]"
+          className="bg-orange-50 rounded-2xl shadow-lg p-6 border-l-4 border-orange-500 flex flex-col md:h-[400px]"
           onDragOver={handleDragOver}
           onDrop={() => handleDrop('mustdo')}
         >
@@ -605,7 +606,7 @@ export default function DailyPlannerView({ date, onBack, onLogout }: DailyPlanne
             <h2 className="text-2xl font-bold text-gray-800">Must Do</h2>
           </div>
 
-          <div className="space-y-3 overflow-y-auto flex-1 pr-2 custom-scrollbar">
+          <div className="space-y-3 md:overflow-y-auto md:flex-1 pr-2 custom-scrollbar">
             {mustDos.map((mustDo) => (
               <div
                 key={mustDo.id}
@@ -665,13 +666,13 @@ export default function DailyPlannerView({ date, onBack, onLogout }: DailyPlanne
         </div>
 
         {/* Reminders Column */}
-        <div className="bg-gray-100 rounded-2xl shadow-lg p-6 flex flex-col h-[400px]">
+        <div className="bg-gray-100 rounded-2xl shadow-lg p-6 flex flex-col md:h-[400px]">
           <div className="flex items-center gap-3 mb-6">
             <Bell className="text-gray-700" size={24} />
             <h2 className="text-2xl font-bold text-gray-800">Reminders</h2>
           </div>
 
-          <div className="space-y-3 overflow-y-auto flex-1 pr-2 custom-scrollbar">
+          <div className="space-y-3 md:overflow-y-auto md:flex-1 pr-2 custom-scrollbar">
             {reminders.map((reminder) => (
               <div
                 key={reminder.id}
@@ -782,10 +783,11 @@ export default function DailyPlannerView({ date, onBack, onLogout }: DailyPlanne
         <button 
           onClick={handleSave}
           disabled={isSaving}
-          className="w-full bg-indigo-600 text-white py-4 rounded-2xl text-lg font-bold hover:bg-indigo-700 transition shadow-lg disabled:bg-gray-400"
+          className="w-full bg-indigo-600 text-white py-3 md:py-4 rounded-2xl text-base md:text-lg font-bold hover:bg-indigo-700 transition shadow-lg disabled:bg-gray-400"
         >
           {isSaving ? 'Saving...' : isDirty ? 'Save Plan' : hasSaved ? 'Plan Saved ✓' : 'Save Plan'}
         </button>
+      </div>
       </div>
     </div>
   );
