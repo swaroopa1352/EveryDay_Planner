@@ -64,7 +64,7 @@ export default function PlannerApp() {
       try {
         // Generate array of dates to check (past 7 days + today + next 30 days)
         // This ensures we catch reminders created on previous days' planners
-        const datesToCheck = [];
+        const datesToCheck: string[] = [];
         for (let i = -7; i <= 30; i++) {
           const checkDate = new Date();
           checkDate.setDate(checkDate.getDate() + i);
