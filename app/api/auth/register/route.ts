@@ -71,10 +71,19 @@ export async function POST(req: NextRequest) {
     });
 
     return response;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Registration error:', error);
+    
+    // Check for unique constraint violation
+    if (error?.code === 'P2002') {
+      return NextResponse.json(
+        { error: 'A user with this name already exists' },
+        { status: 409 }
+      );
+    }
+    
     return NextResponse.json(
-      { error: 'Registration failed' },
+      { error: error?.message || 'Registration failed' },
       { status: 500 }
     );
   }
